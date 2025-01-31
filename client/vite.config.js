@@ -7,14 +7,5 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [tailwindcss(), react()],
-    server: {
-      proxy: {
-        "/api": {
-          target: env.VITE_API_BASE_URL,
-          changeOrigin: true,
-          secure: false,
-        },
-      },
-    },
   };
 });

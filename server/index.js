@@ -4,9 +4,16 @@ const axios = require("./config/axiosConfig");
 const dataRoutes = require("./routes/dataRoutes");
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [""],
+    methods: ["POST", "GET"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use("/api/data", dataRoutes);
 

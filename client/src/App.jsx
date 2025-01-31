@@ -1,14 +1,27 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./config/axiosConfig";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("/api/data").then((response) => {
-      setData(response.data);
-    });
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/api/data");
+        console.log("Response:", response.data);
+        setData(response.data);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err.message);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>Loading...</div>;
 
   return (
     <div className="container mx-auto p-4 text-center">

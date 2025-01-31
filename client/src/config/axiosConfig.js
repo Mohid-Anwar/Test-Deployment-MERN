@@ -4,12 +4,17 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 // Create axios instance with the full server URL
 const instance = axios.create({
-  baseURL, // Don't append /api here
+  baseURL,
+  withCredentials: true // Add this if you're using credentials
 });
 
-// Add a request interceptor to log the full URL (for debugging)
+// Add request interceptor to log and ensure absolute URLs
 instance.interceptors.request.use((config) => {
-  console.log('Making request to:', config.baseURL + config.url);
+  // Ensure URL starts with baseURL
+  if (!config.url.startsWith('http')) {
+    config.url = `${baseURL}${config.url}`;
+  }
+  console.log('Making request to:', config.url);
   return config;
 });
 
